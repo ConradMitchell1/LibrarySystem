@@ -12,9 +12,9 @@ namespace LibrarySystem.Repositories
     {
         private readonly List<Magazine> _magazines = new()
         {
-            new Magazine(1, "Spooky Readings", "Horror"),
-            new Magazine(2, "Wonderful Gardens", "Nature"),
-            new Magazine(3, "Coding Weekly", "Computing")
+            new Magazine(1, "Spooky Readings", "Horror", 1, DateTime.Now),
+            new Magazine(2, "Wonderful Gardens", "Nature", 1, DateTime.Now),
+            new Magazine(3, "Coding Weekly", "Computing", 1, DateTime.Now)
         };
         
         public IEnumerable<Magazine> GetAll()

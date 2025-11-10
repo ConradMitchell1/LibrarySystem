@@ -27,7 +27,7 @@ namespace LibrarySystem.UI
         {
             while (true)
             {
-                Console.WriteLine("\n1. View Books\n2. Borrow Book\n3. Return Book\n4. View Magazines\n5. Borrow Magazine\n6. Return Magazine\n7. Exit");
+                Console.WriteLine("\n1. View Books\n2. Borrow Book\n3. Return Book\n4. View Magazines\n5. Borrow Magazine\n6. Return Magazine\n7. Search Books by title/author\n8. Search Magazines by tile/genre.\n9. Exit");
                 Console.WriteLine("Choice: ");
 
                 var choice = Console.ReadLine();
@@ -53,9 +53,40 @@ namespace LibrarySystem.UI
                         ReturnMagazine();
                         break;
                     case "7":
+                        SearchBooks();
+                        break;
+                    case "8":
+                        SearchMags();
+                        break;
+                    case "9":
                         return;
 
                 }
+            }
+        }
+
+        private void SearchMags()
+        {
+            Console.WriteLine("Enter title or category to search: ");
+            var query = Console.ReadLine();
+            var byTitle = _magazineService.SearchByTitle(query);
+            var byCategory = _magazineService.SearchByCategory(query);
+            var results = byTitle.Union(byCategory).Distinct();
+            foreach (var mag in results)
+            {
+                Console.WriteLine($"{mag.Id}: {mag.Title} - {(mag.IsBorrowed ? "Borrowed" : "Available")}");
+            }
+        }
+        private void SearchBooks()
+        {
+            Console.WriteLine("Enter title or genre to search: ");
+            var query = Console.ReadLine();
+            var byTitle = _libraryService.SearchByTitle(query);
+            var byGenre = _libraryService.SearchByGenre(query);
+            var results = byTitle.Union(byGenre).Distinct();
+            foreach (var book in results)
+            {
+                Console.WriteLine($"{book.Id}: {book.Title} {book.Author} {book.Genre} {book.Year} - {(book.IsBorrowed ? "Borrowed" : "Available")}");
             }
         }
 
@@ -63,7 +94,7 @@ namespace LibrarySystem.UI
         {
             foreach (var book in _libraryService.GetAvailable())
             {
-                Console.WriteLine($"{book.Id}: {book.Title} - {(book.IsBorrowed ? "Borrowed" : "Available")}");
+                Console.WriteLine($"{book.Id}: {book.Title} {book.Author} {book.Genre} {book.Year} - {(book.IsBorrowed ? "Borrowed" : "Available")}");
             }
         }
 
@@ -82,9 +113,9 @@ namespace LibrarySystem.UI
         }
         private void ViewMagazines()
         {
-            foreach (var book in _magazineService.GetAvailable())
+            foreach (var magazine in _magazineService.GetAvailable())
             {
-                Console.WriteLine($"{book.Id}: {book.Title} - {(book.IsBorrowed ? "Borrowed" : "Available")}");
+                Console.WriteLine($"{magazine.Id}: {magazine.Title} - {(magazine.IsBorrowed ? "Borrowed" : "Available")}");
             }
         }
 

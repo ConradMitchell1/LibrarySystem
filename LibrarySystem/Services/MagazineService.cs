@@ -46,5 +46,38 @@ namespace LibrarySystem.Services
             _repository.Update(mag);
             return true;
         }
+
+        public IEnumerable<Magazine> ReleasedAfter(DateTime date)
+        {
+            return _repository.GetAll().Where(m => m.ReleaseDate > date);
+        }
+
+        public IEnumerable<(string Category, int Count)> CountByCategory()
+        {
+            return _repository.GetAll()
+                .GroupBy(m => m.Category)
+                .Select(g => (Category: g.Key, Count: g.Count()));
+        }
+
+        public IEnumerable<Magazine> TopLatestIssues(int n)
+        {
+            return _repository.GetAll()
+                .OrderByDescending(m => m.IssueNumber)
+                .Take(n);
+        }
+
+        public IEnumerable<Magazine> SearchByTitle(string title)
+        {
+            return _repository.GetAll()
+                .Where(m => m.Title.Contains(title, StringComparison.OrdinalIgnoreCase))
+                .OrderBy(m => m.Title);
+        }
+
+        public IEnumerable<Magazine> SearchByCategory(string category)
+        {
+            return _repository.GetAll()
+                .Where(m => m.Category.Equals(category, StringComparison.OrdinalIgnoreCase))
+                .OrderBy(m => m.Title);
+        }
     }
 }

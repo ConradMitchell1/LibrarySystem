@@ -12,9 +12,9 @@ namespace LibrarySystem.Repositories
     {
         private readonly List<Book> _books = new()
         {
-            new Book ( 1, "Blue Book" ),
-            new Book (2, "Red Book"),
-            new Book (3, "Green Book")
+            new Book ( 1, "Blue Book","John P", "Horror", 2025),
+            new Book (2, "Red Book", "Billy F", "Fiction", 2018),
+            new Book (3, "Green Book", "John P", "Science", 2010)
         };
         public IEnumerable<Book> GetAll()
         {
